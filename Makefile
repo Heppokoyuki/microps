@@ -5,7 +5,8 @@ APPS = apps/tcp_echo \
 TEST = test/raw_test \
        test/ethernet_test \
        test/slip_test \
-       test/arp_test
+       test/arp_test \
+       rip
 
 OBJS = util.o \
        raw.o \

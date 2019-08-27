@@ -6,7 +6,7 @@ TEST = test/raw_test \
        test/ethernet_test \
        test/slip_test \
        test/arp_test \
-       rip
+       rip/rip
 
 OBJS = util.o \
        raw.o \
@@ -21,7 +21,7 @@ OBJS = util.o \
        dhcp.o \
        microps.o
 
-CFLAGS := $(CFLAGS) -g -W -Wall -Wno-unused-parameter -I .
+CFLAGS := $(CFLAGS) -g -W -Wall -Wno-unused-parameter -lrt -I .
 
 ifeq ($(shell uname),Linux)
 	OBJS := $(OBJS) raw/soc.o raw/tap_linux.o

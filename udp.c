@@ -238,6 +238,7 @@ udp_api_recvfrom (int soc, uint8_t *buf, size_t size, ip_addr_t *peer, uint16_t 
     }
     pthread_mutex_unlock(&mutex);
     if (ret == ETIMEDOUT) {
+		errno = ETIMEDOUT;
         return -1;
     }
     queue_hdr = (struct udp_queue_hdr *)entry->data;

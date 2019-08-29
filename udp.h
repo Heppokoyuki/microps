@@ -20,5 +20,7 @@ extern ssize_t
 udp_api_sendto (int soc, uint8_t *buf, size_t len, ip_addr_t *peer, uint16_t port);
 extern int
 udp_init (void);
+extern struct netif *
+udp_api_get_iface_from_socket(int soc);
 
 #endif

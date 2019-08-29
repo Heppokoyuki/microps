@@ -13,14 +13,6 @@
 #define IP_FRAGMENT_NUM_MAX 8
 #define IP_ROUTE_TABLE_SIZE 8
 
-struct ip_route {
-    uint8_t used;
-    ip_addr_t network;
-    ip_addr_t netmask;
-    ip_addr_t nexthop;
-    struct netif *netif;
-};
-
 struct ip_fragment {
     struct ip_fragment *next;
     ip_addr_t src;
@@ -233,7 +225,7 @@ ip_fragment_process (struct ip_hdr *hdr, uint8_t *payload, size_t plen) {
  * IP ROUTING
  */
 
-static int
+int
 ip_route_add (ip_addr_t network, ip_addr_t netmask, ip_addr_t nexthop, struct netif *netif) {
     struct ip_route *route;
 
@@ -250,7 +242,7 @@ ip_route_add (ip_addr_t network, ip_addr_t netmask, ip_addr_t nexthop, struct ne
     return -1;
 }
 
-static int
+int
 ip_route_del (struct netif *netif) {
     struct ip_route *route;
 
@@ -264,7 +256,7 @@ ip_route_del (struct netif *netif) {
     return 0;
 }
 
-static struct ip_route *
+struct ip_route *
 ip_route_lookup (const struct netif *netif, const ip_addr_t *dst) {
     struct ip_route *route, *candidate = NULL;
 

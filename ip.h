@@ -46,6 +46,14 @@ struct netif_ip {
     ip_addr_t gateway;
 };
 
+struct ip_route {
+    uint8_t used;
+    ip_addr_t network;
+    ip_addr_t netmask;
+    ip_addr_t nexthop;
+    struct netif *netif;
+};
+
 extern const ip_addr_t IP_ADDR_ANY;
 extern const ip_addr_t IP_ADDR_BROADCAST;
 
@@ -53,7 +61,12 @@ extern int
 ip_addr_pton (const char *p, ip_addr_t *n);
 extern char *
 ip_addr_ntop (const ip_addr_t *n, char *p, size_t size);
-
+extern int
+ip_route_add (ip_addr_t network, ip_addr_t netmask, ip_addr_t nexthop, struct netif *netif);
+extern int
+ip_route_del (struct netif *netif);
+extern struct ip_route *
+ip_route_lookup (const struct netif *netif, const ip_addr_t *dst);
 extern struct netif *
 ip_netif_alloc (const char *addr, const char *netmask, const char *gateway);
 extern struct netif *

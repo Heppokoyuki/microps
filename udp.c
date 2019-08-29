@@ -196,7 +196,7 @@ udp_api_bind_iface (int soc, struct netif *iface, uint16_t port) {
         return -1;
     }
     for (tmp = cb_table; tmp < array_tailof(cb_table); tmp++) {
-        if (tmp->used && (!tmp->iface || tmp->iface == iface) && tmp->port == port) {
+        if (tmp != cb && tmp->used && (!tmp->iface || tmp->iface == iface) && tmp->port == port) {
             pthread_mutex_unlock(&mutex);
             return -1;
         }
@@ -205,6 +205,28 @@ udp_api_bind_iface (int soc, struct netif *iface, uint16_t port) {
     cb->port = port;
     pthread_mutex_unlock(&mutex);
     return 0;
+}
+
+struct netif *
+udp_api_get_iface_from_socket(int soc)
+{
+    struct udp_cb *cb;
+    struct netif *result;
+
+    if(soc < 0 || soc >= UDP_CB_TABLE_SIZE) {
+        fprintf(stderr, "hoge!\n");
+        return NULL;
+    }
+
+    pthread_mutex_lock(&mutex);
+    cb = &cb_table[soc];
+    if(!cb->used) {
+        pthread_mutex_unlock(&mutex);
+        return NULL;
+    }
+    result = cb->iface;
+    pthread_mutex_unlock(&mutex);
+    return result;
 }
 
 ssize_t
